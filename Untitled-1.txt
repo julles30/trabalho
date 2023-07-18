@@ -1,0 +1,100 @@
+const BaseURL = 'https://649a1d4a79fbe9bcf8404b5a.mockapi.io/users/{20191214010032}/products';
+
+// Função para obter a lista de produtos
+async function getProducts() {
+  try {
+    const response = await fetch(BaseURL);
+    const products = await response.json();
+    return products;
+  } catch (error) {
+    console.log('Erro ao obter a lista de produtos:', error);
+  }
+}
+
+// Função para adicionar um novo produto
+async function addProduct(product) {
+  try {
+    const response = await fetch(BaseURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(product)
+    });
+    const newProduct = await response.json();
+    return newProduct;
+  } catch (error) {
+    console.log('Erro ao adicionar o produto:', error);
+  }
+}
+
+// Função para atualizar um produto existente
+async function updateProduct(productId, updatedProduct) {
+  try {
+    const response = await fetch(`${BaseURL}/${productId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedProduct)
+    });
+    const updatedProductData = await response.json();
+    return updatedProductData;
+  } catch (error) {
+    console.log('Erro ao atualizar o produto:', error);
+  }
+}
+
+// Função para excluir um produto existente
+async function deleteProduct(productId) {
+  try {
+    const response = await fetch(`${BaseURL}/${productId}`, {
+      method: 'DELETE'
+    });
+    const deletedProductData = await response.json();
+    return deletedProductData;
+  } catch (error) {
+    console.log('Erro ao excluir o produto:', error);
+  }
+}
+
+// Exemplo de uso:
+
+// Obter a lista de produtos
+getProducts()
+  .then(products => {
+    console.log('Lista de produtos:', products);
+  });
+
+// Adicionar um novo produto
+const newProduct = {
+  categoria: 'roupas',
+  nome: 'Camiseta',
+  preco: 29.99,
+  descricao: 'Camiseta de algodão',
+  imagem: 'caminho/para/imagem.jpg'
+};
+
+addProduct(newProduct)
+  .then(addedProduct => {
+    console.log('Novo produto adicionado:', addedProduct);
+  });
+
+// Atualizar um produto existente
+const productIdToUpdate = '123';
+const updatedProductData = {
+  preco: 39.99
+};
+
+updateProduct(productIdToUpdate, updatedProductData)
+  .then(updatedProduct => {
+    console.log('Produto atualizado:', updatedProduct);
+  });
+
+// Excluir um produto existente
+const productIdToDelete = '456';
+
+deleteProduct(productIdToDelete)
+  .then(deletedProduct => {
+    console.log('Produto excluído:', deletedProduct);
+  });
